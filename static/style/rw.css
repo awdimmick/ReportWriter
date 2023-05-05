@@ -1,0 +1,10 @@
+#report_selector_area{
+    background-color: darkgray;
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+.rw-report-complete {
+    border-left-color: lightgreen;
+    border-left-width: 5px;
+}

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="/static/js/rw_editor.js" type="application/javascript"></script>
+</head>
+
+<body class="w3-light-grey" onload="load_editor_page()">
+
+<div class="w3-container" style="padding:0px;">
+    <!--<h1>Report Writer</h1>-->
+    <div class="w3-row">
+        <div class="w3-bar w3-border w3-blue-gray">
+            <span class="w3-bar-item"><b>ReportWriter</b> Editor</span>
+            <div class="w3-dropdown-hover">
+                <button class="w3-button">Menu</button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4" style="z-index: 2">
+                    <a href="#" class="w3-bar-item w3-button" onclick="save_excel()">Save report set</a>
+                    <a href="#" class="w3-bar-item w3-button" onclick="new_report_set()">New</a>
+                    <a href="#" class="w3-bar-item w3-button" onclick="export_report_set('pdf')">Export as PDF</a>
+                    <a href="#" class="w3-bar-item w3-button" onclick="export_report_set('docx')">Export as Word</a>
+                </div>
+            </div>
+            <span id="notification_area" class="w3-bar-item w3-center w3-right"></span>
+        </div>
+    </div>
+
+
+    <div class="w3-row">
+
+        <!-- Student selection sidebar -->
+        <div id="student_sidebar" class="w3-sidebar m2 w3-bar-block w3-light-grey w3-card" style="width:15%;">
+        </div>
+
+        <!-- Report editing area -->
+        <div class="w3-col" style="margin-left:15%; width:60%;">
+
+            <!-- Report navigation -->
+            <div class="w3-row w3-margin-top">
+                <div class="w3-threequarter w3-padding"><strong id="report_editor_student_name" style="font-size: large">Student name</strong> (<span id="report_editor_student_group">Group</span>)
+                </div>
+                <div class="w3-bar w3-quarter">
+                    <button class="w3-button w3-border w3-round" onclick="load_active_report('previous')">&lt; Previous</button>
+                    <button class="w3-button w3-border w3-round" onclick="load_active_report('next')">Next &gt;</button>
+                </div>
+            </div>
+
+            <div id="report_editor_student_notes_container" class="w3-panel w3-margin w3-padding w3-border w3-light-grey w3-round-large">
+                <span id="report_editor_student_notes_text">Student notes</span>
+            </div>
+
+            <div class="w3-cell-row">
+                <div class="w3-container w3-cell" style="width: 30%">
+
+                    <table id="report_editor_data_values_table" class="w3-table">
+                        <tr>
+                            <th>Label</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Label 1</td>
+                            <td>Value 1</td>
+                        </tr>
+                        <tr>
+                            <td>Label 2</td>
+                            <td>Value 2</td>
+                        </tr>
+                        <tr>
+                            <td>Label 3</td>
+                            <td>Value 3</td>
+                        </tr>
+
+                    </table>
+                </div>
+                <div class="w3-container">
+
+                    <p>
+                        <label for="raw_report_text">Report text</label>
+                        <textarea id="raw_report_text" class="w3-input w3-border w3-round" rows="6"
+                                  placeholder="Enter report comment" onkeyup="compile_report_preview()" onfocusout="update_active_report()"></textarea>
+                    </p>
+
+                    <label>Compiled report</label>
+                    <p id="report_editor_compiled_report" class="w3-white w3-padding-small w3-border-round" style="min-height: 6em;">[Report text will appear here]</p>
+                    <small id="report_editor_character_count">XX characters</small>
+                    <div class="w3-row w3-margin-bottom">
+                        <button class="w3-button w3-white w3-border w3-round w3-hover-green w3-right" onclick="window.alert('Not yet functional!')">Mark as complete
+                        </button>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Comment bank sidebar -->
+        <div class="w3-col w3-padding  w3-sidebar" style="width:25%; right:0; background-color: #f5f5f5;">
+            <button class="w3-button w3-round w3-block w3-border w3-white w3-margin-bottom"
+                    onclick="showHideAddCommentModal('show')">Add comment
+            </button>
+            <div id="comment_bank_comments" style="padding-bottom: 100px;">
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Add comment modal -->
+    <div id="add_comment_modal" class="w3-modal">
+        <div class="w3-modal-content w3-padding">
+            <div class="w3-container">
+                <span onclick="showHideAddCommentModal('hide')" class="w3-button w3-display-topright">&times;</span>
+                <h3 id="add_comment_modal_title">Add comment</h3>
+                <div class="w3-cell-row w3-margin-bottom">
+                    <div class="w3-cell w3-twothird" style="padding-right: 10px">
+                        <label>Comment label</label>&nbsp;
+                        <input id="add_comment_modal_label" type="text" class="w3-input w3-border w3-round" placeholder="Enter comment label">
+                    </div>
+                    <div class="w3-cell w3-third">
+                        <label>Category</label>
+                        <input type="text" id="add_comment_modal_category" list="add_comment_modal_categories" class="w3-input w3-border w3-round"
+                               placeholder="Select category">
+                        <datalist id="add_comment_modal_categories">
+
+                        </datalist>
+                        </input>
+                    </div>
+                </div>
+                <div class="w3-row w3-margin-bottom">
+                    <label>Comment text</label>
+                    <textarea id="add_comment_modal_text" class="w3-input w3-border w3-round"
+                              placeholder="Enter comment text"></textarea>
+                </div>
+                <div class="w3-row w3-margin-bottom">
+                    <span>Add data labels</span>
+                    <div id="add_comment_modal_data_value_buttons" class="w3-bar">
+                        <button class="w3-button w3-border w3-padding-small" onclick="addDataLabelToComment('Label 1')">
+                            Data Label 1
+                        </button>&nbsp;
+                        <button class="w3-button w3-border w3-padding-small" onclick="addDataLabelToComment('Label 2')">
+                            Data Label 2
+                        </button>&nbsp;
+                        <button class="w3-button w3-border w3-padding-small" onclick="addDataLabelToComment('Label 3')">
+                            Data Label 3
+                        </button>&nbsp;
+                        <button class="w3-button w3-border w3-padding-small" onclick="addDataLabelToComment('Label 4')">
+                            Data Label 4
+                        </button>&nbsp;
+                    </div>
+                </div>
+                <div class="w3-row w3-margin-bottom">
+                    <button id="add_comment_modal_add_button" class="w3-button w3-green w3-right w3-round" onclick="add_comment_to_comment_bank()">Add to comment bank</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

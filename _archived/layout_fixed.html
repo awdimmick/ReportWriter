@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="/static/js/rw_editor.js" type="application/javascript"></script>
+</head>
+
+<body class="w3-light-grey" onload="tests()">
+
+<div class="w3-container" style="padding:0px;">
+    <!--<h1>Report Writer</h1>-->
+    <div class="w3-row">
+        <div class="w3-bar w3-border w3-blue-gray">
+            <span class="w3-bar-item"><b>ReportWriter</b> Editor</span>
+            <div class="w3-dropdown-hover">
+                <button class="w3-button">Menu</button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4" style="z-index: 2">
+                    <a href="#" class="w3-bar-item w3-button">Save report set</a>
+                    <a href="#" class="w3-bar-item w3-button">New</a>
+                    <a href="#" class="w3-bar-item w3-button">Export as PDF</a>
+                    <a href="#" class="w3-bar-item w3-button">Export as Word</a>
+                </div>
+            </div>
+            <span class="w3-bar-item w3-center w3-right">Notifications and messages</span>
+        </div>
+    </div>
+
+
+    <div class="w3-row">
+
+        <!-- Student selection sidebar -->
+        <div class="w3-sidebar m2 w3-bar-block w3-light-grey w3-card" style="width:15%;">
+            <a href="#" class="w3-bar-item w3-button">Student 1</a>
+            <a href="#" class="w3-bar-item w3-button">Student 2</a>
+            <a href="#" class="w3-bar-item w3-button">Student 3</a>
+            <a href="#" class="w3-bar-item w3-button">Student 4</a>
+        </div>
+
+        <!-- Report editing area -->
+        <div class="w3-col" style="margin-left:15%; width:60%;">
+
+            <!-- Report navigation -->
+            <div class="w3-row w3-margin-top">
+                <div class="w3-threequarter w3-padding"><strong style="font-size: large">Student name</strong> (Group)
+                </div>
+                <div class="w3-bar w3-quarter">
+                    <button class="w3-button w3-border w3-round">&lt; Previous</button>
+                    <button class="w3-button w3-border w3-round">Next &gt;</button>
+                </div>
+            </div>
+
+            <div class="w3-panel w3-margin w3-padding w3-border w3-light-grey w3-round-large">
+                <span>Student notes</span>
+            </div>
+
+            <div class="w3-cell-row">
+                <div class="w3-container w3-cell" style="width: 30%">
+
+                    <table class="w3-table">
+                        <tr>
+
+                            <th>Label</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Label 1</td>
+                            <td>Value 1</td>
+                        </tr>
+                        <tr>
+                            <td>Label 2</td>
+                            <td>Value 2</td>
+                        </tr>
+                        <tr>
+                            <td>Label 3</td>
+                            <td>Value 3</td>
+                        </tr>
+
+                    </table>
+                </div>
+                <div class="w3-container">
+
+                    <p>
+                        <label for="raw_report_text">Report text</label>
+                        <textarea id="raw_report_text" class="w3-input w3-border w3-round"
+                                  placeholder="Enter report comment"></textarea>
+                    </p>
+
+                    <label>Compiled report</label>
+                    <p class="w3-white w3-padding-small w3-border-round">[Report text will appear here]</p>
+                    <small>XX characters</small>
+                    <div class="w3-row w3-margin-bottom">
+                        <button class="w3-button w3-white w3-border w3-round w3-hover-green w3-right">Mark as complete
+                        </button>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Comment bank sidebar -->
+        <div class="w3-col w3-padding  w3-sidebar" style="width:25%; right:0; background-color: #f5f5f5">
+            <button class="w3-button w3-round w3-block w3-border w3-border-blue-gray"
+                    onclick="showHideAddCommentModal(true)">Add comment
+            </button>
+            <div id="comment_bank_comments">
+                
+                <br>
+                <button class="w3-button w3-block w3-border-top w3-border-bottom" onclick="showCommentBankCategory('category1')">
+                    COMMENT CATEGORY 1
+                </button>
+                <div id="cb_category1_comments" class="w3-hide w3-show rw-cb-category">
+                    <!--
+                    <div class="w3-panel w3-border w3-white" onmouseenter="showHideCommentBankButtons(1, true)"
+                         onmouseleave="showHideCommentBankButtons(1, false)">
+                        <p><b>Comment label</b></p>
+                        <p>Comment text</p>
+                        <div id="cb_comment_1_buttons" class="w3-center w3-hide">
+                            <div class="w3-bar">
+                                <button class="w3-small w3-button w3-white w3-border w3-round w3-hover-green">Use
+                                </button>&nbsp;
+                                <button class="w3-small w3-button w3-white w3-border w3-round">Edit</button>&nbsp;
+                                <button class="w3-small w3-button w3-white w3-border w3-round w3-hover-red">Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w3-panel w3-border w3-white" onmouseenter="showHideCommentBankButtons(2, true)"
+                         onmouseleave="showHideCommentBankButtons(2, false)">
+                        <p><b>Comment label</b></p>
+                        <p>Comment text</p>
+                        <div id="cb_comment_2_buttons" class="w3-center w3-hide">
+                            <div class="w3-bar">
+                                <button class="w3-small w3-button w3-white w3-border w3-round w3-hover-green">Use
+                                </button>&nbsp;
+                                <button class="w3-small w3-button w3-white w3-border w3-round">Edit</button>&nbsp;
+                                <button class="w3-small w3-button w3-white w3-border w3-round w3-hover-red">Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w3-panel w3-border w3-white" onmouseenter="showHideCommentBankButtons(3, true)"
+                         onmouseleave="showHideCommentBankButtons(3, false)">
+                        <p><b>Comment label</b></p>
+                        <p>Comment text</p>
+                        <div id="cb_comment_3_buttons" class="w3-center w3-hide">
+                            <div class="w3-bar">
+                                <button class="w3-small w3-button w3-white w3-border w3-round w3-hover-green">Use
+                                </button>&nbsp;
+                                <button class="w3-small w3-button w3-white w3-border w3-round">Edit</button>&nbsp;
+                                <button class="w3-small w3-button w3-white w3-border w3-round w3-hover-red">Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+                </div>
+                <button class="w3-button w3-block w3-border-top w3-border-bottom" onclick="showCommentBankCategory('category2')">
+                    COMMENT CATEGORY 2
+                </button>
+                <div id="cb_category2_comments" class="w3-hide rw-cb-category">
+                    <div class="w3-panel w3-card">
+                        <p><b>Comment label</b></p>
+                        <p>Comment text</p>
+                    </div>
+                    <div class="w3-panel w3-card">
+                        <p><b>Comment label</b></p>
+                        <p>Comment text</p>
+                    </div>
+                </div>
+                <button class="w3-button w3-block w3-border-top w3-border-bottom" onclick="showCommentBankCategory('category3')">
+                    COMMENT CATEGORY 3
+                </button>
+                <div id="cb_category3_comments" class="w3-hide rw-cb-category">
+                    <div class="w3-panel w3-card">
+                        <p><b>Comment label</b></p>
+                        <p>Comment text</p>
+                    </div>
+                    <div class="w3-panel w3-card">
+                        <p><b>Comment label</b></p>
+                        <p>Comment text</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add comment modal -->
+    <div id="add_comment_modal" class="w3-modal">
+        <div class="w3-modal-content w3-padding">
+            <div class="w3-container">
+                <span onclick="showHideAddCommentModal(false)" class="w3-button w3-display-topright">&times;</span>
+                <h3>Add comment</h3>
+                <div class="w3-cell-row w3-margin-bottom">
+                    <div class="w3-cell w3-twothird" style="padding-right: 10px">
+                        <label>Comment label</label>&nbsp;
+                        <input type="text" class="w3-input w3-border w3-round" placeholder="Enter commmnt label">
+                    </div>
+                    <div class="w3-cell w3-third">
+                        <label>Category</label>
+                        <input type="text" list="add_comment_categories" class="w3-input w3-border w3-round"
+                               placeholder="Select category">
+                        <datalist id="add_comment_categories">
+                            <option>Category 1</option>
+                            <option>Category 2</option>
+                            <option>Category 3</option>
+                        </datalist>
+                        </input>
+                    </div>
+                </div>
+                <div class="w3-row w3-margin-bottom">
+                    <label>Comment text</label>
+                    <textarea id="add_comment_text" class="w3-input w3-border w3-round"
+                              placeholder="Enter comment text"></textarea>
+                </div>
+                <div class="w3-row w3-margin-bottom">
+                    <span>Add data labels</span>
+                    <div class="w3-bar">
+                        <button class="w3-button w3-border w3-padding-small" onclick="addDataLabelToComment('Label 1')">
+                            Data Label 1
+                        </button>&nbsp;
+                        <button class="w3-button w3-border w3-padding-small" onclick="addDataLabelToComment('Label 2')">
+                            Data Label 2
+                        </button>&nbsp;
+                        <button class="w3-button w3-border w3-padding-small" onclick="addDataLabelToComment('Label 3')">
+                            Data Label 3
+                        </button>&nbsp;
+                        <button class="w3-button w3-border w3-padding-small" onclick="addDataLabelToComment('Label 4')">
+                            Data Label 4
+                        </button>&nbsp;
+                    </div>
+                </div>
+                <div class="w3-row w3-margin-bottom">
+                    <button class="w3-button w3-green w3-right w3-round">Add to comment bank</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

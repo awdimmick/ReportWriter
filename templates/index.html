@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ReportWriter</title>
+    <script src="/static/js/rw_editor.js" type="application/javascript"></script>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/static/style/rw.css" rel="stylesheet">
+</head>
+
+<body onload="clear_local_storage()">
+<div class="w3-container">
+    <div class="w3-panel w3-green"><h1>ReportWriter</h1>
+        <p>Where copy-and-paste meets data-driven, targeted student reporting</p></div>
+
+    <strong>Welcome to ReportWriter!</strong>
+    <p>To keep things simple and secure, ReportWriter doesn't save any of your or your students' data, so there are no
+        accounts or logins required.</p>
+    <p>Instead, to get started simply download the Excel template, add your students' data, save and then uplaod your
+        saved
+        template. Your reports will then open in the ReportWriter editor, where you can setup your comment bank and
+        write
+        your reports!</p>
+    <p>When you are finished writing your reports, simply press 'Save reports' to download an updated version of the
+        Excel
+        template which you can re-upload in future to carry on where you left off.</p>
+    <h2>Let's get started!</h2>
+    <p>Choose an option to get started with ReportWriter</p>
+    <form method="post" action="/upload_report_set" enctype="multipart/form-data">
+        <div class="w3-row w3-center">
+            <div class="w3-cell w3-half w3-section">
+                <button class="w3-button w3-green w3-section" onclick="window.location.href='/get_template';">Download a blank
+                    template
+                </button>
+            </div>
+
+            <div class="w3-cell w3-half w3-cell-middle">
+                <p>Upload a started report set (.xlsx)</p>
+
+                <input type="file" id="report_set_file" name="report_set_file" class=""
+                       accept="application/vnd.ms-excel,.xlsx">
+                <input type="submit" class="w3-button w3-blue" value="Upload">
+            </div>
+
+        </div>
+
+    </form>
+
+    {% for message in get_flashed_messages() %}
+        <p class="error_message">{{ message }}</p>
+    {% endfor %}
+
+</div>
+</body>
+</html>
