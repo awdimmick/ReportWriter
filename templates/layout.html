@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>ReportWriter Editor</title>
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -89,7 +89,7 @@
                     <p id="report_editor_compiled_report" class="w3-white w3-padding-small w3-border-round" style="min-height: 6em;">[Report text will appear here]</p>
                     <small id="report_editor_character_count">XX characters</small>
                     <div class="w3-row w3-margin-bottom">
-                        <button class="w3-button w3-white w3-border w3-round w3-hover-green w3-right" onclick="window.alert('Not yet functional!')">Mark as complete
+                        <button id="report_editor_complete_button" class="w3-button w3-white w3-border w3-round w3-hover-green w3-right" onclick="set_active_report_complete_status(true)">Mark as complete
                         </button>
                     </div>
 

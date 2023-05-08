@@ -137,6 +137,17 @@ function load_reports_from_server() {
     xhr.onload = () => {
         if (xhr.status == 200) {
             active_report_set = JSON.parse(xhr.responseText);
+            // In case any reports comments are null, replace with empty strings
+
+            for (const report of active_report_set.reports){
+                if (report.raw_comment == null){
+                    report.raw_comment = "";
+                }
+                if (report.compiled_comment == null){
+                    report.compiled_comment = "";
+                }
+            }
+
             update_local_storage();
             continue_loading_editor_page();
         } else if (xhr.status == 404) {
@@ -209,9 +220,11 @@ function alert_unsaved_changes(show_message) {
 
     if (show_message) {
         notifications_area.innerText = "You have unsaved changes"
+        unsaved_changes = true;
 
     } else {
         notifications_area.innerHTML = "";
+        unsaved_changes = false;
 
     }
 }
@@ -295,6 +308,7 @@ function continue_loading_editor_page(){
     refresh_comment_bank();
     populate_student_sidebar();
     load_active_report(1);
+    alert_unsaved_changes(false);
 }
 
 function refresh_comment_bank() {
@@ -415,6 +429,7 @@ function delete_comment_from_comment_bank(comment_id) {
         load_comment_bank();
         refresh_comment_bank();
         compile_report_preview();
+        compile_all_reports();
         update_local_storage();
     }
 
@@ -510,14 +525,18 @@ function add_comment_to_comment_bank(edit_id) {
     // Reload comment bank, including categories
     load_comment_bank();
 
+    refresh_comment_bank();
+
     // Redraw comment bank sidebar
     refresh_comment_bank();
 
+    // Process all reports to use new comment
+    compile_all_reports();
+    load_active_report(active_report_id);
+    //compile_report_preview();
+
     // Update local storage
     update_local_storage();
-
-    // Process all reports to use new comment
-    compile_report_preview();
 
     // Close modal
     showHideAddCommentModal("hide", null);
@@ -549,6 +568,9 @@ function add_student_to_sidebar(display_name, report_id) {
         load_active_report(report_id)
     };
     sidebar.appendChild(item);
+    // Add complete/incomplete indicator
+    let report_complete = active_report_set.reports[report_id - 1].complete ? "complete" : "draft";
+    set_student_sidebar_status(report_complete, report_id);
 }
 
 function set_student_sidebar_status(status, report_id) {
@@ -558,7 +580,8 @@ function set_student_sidebar_status(status, report_id) {
             if (status === "complete") {
                 sidebarButton.style += "margin-left:-5px; border-left-width:5px; border-left-color:green; border-left-style:solid; background-color:rgb(203, 223, 199) ";
             } else {
-                sidebarButton.style = sidebarButton.style.replace("margin-left:-5px; border-left-width:5px; border-left-color:green; border-left-style:solid; background-color:rgb(203, 223, 199) ", "");
+                //sidebarButton.style = sidebarButton.style.replace("margin-left:-5px; border-left-width:5px; border-left-color:green; border-left-style:solid; background-color:rgb(203, 223, 199) ", "");
+                sidebarButton.style = "";
             }
         }
     }
@@ -607,9 +630,8 @@ function load_active_report(report_id) {
 
     if (active_report.student.notes != null) {
         document.getElementById("report_editor_student_notes_text").innerText = active_report.student.notes;
-        if (student_notes_container.className.indexOf("w3-hide") !== -1) {
-            student_notes_container.className = student_notes_container.className.replace(" w3-hide", "");
-        }
+        student_notes_container.className = student_notes_container.className.replaceAll(" w3-hide", "");
+
     } else {
         student_notes_container.className += " w3-hide";
     }
@@ -618,6 +640,8 @@ function load_active_report(report_id) {
     //compiled_report.innerText = active_report.compiled_comment;
     compile_report_preview();
     load_active_report_data_values();
+    // Update the "mark as complete" and sidebar completeness indicator
+    set_active_report_complete_status(active_report.complete);
 
 }
 
@@ -702,6 +726,55 @@ function update_active_report() {
 
 }
 
-function compile_all_reports() {
+function set_active_report_complete_status(complete){
+    let active_report = active_report_set.reports[active_report_id - 1];
+    let mark_complete_btn = document.getElementById("report_editor_complete_button");
+    active_report.complete = complete;
+
+    if (complete){
+        // Update "Mark as complete button"
+        mark_complete_btn.innerText = "Mark as incomplete";
+        mark_complete_btn.className = mark_complete_btn.className.replace(" w3-white", " w3-green");
+        mark_complete_btn.className = mark_complete_btn.className.replace(" w3-hover-green", " w3-hover-gray");
+        // Change button behaviour
+        mark_complete_btn.onclick = function (){set_active_report_complete_status(false)};
+        // Update sidebar appearance for active report
+        set_student_sidebar_status("complete", active_report_id);
+    }
+    else {
+        set_student_sidebar_status("draft", active_report_id);
+        mark_complete_btn.innerText = "Mark as complete";
+        mark_complete_btn.className = mark_complete_btn.className.replace(" w3-green", " w3-white");
+        mark_complete_btn.className = mark_complete_btn.className.replace(" w3-hover-gray", " w3-hover-green");
+        mark_complete_btn.onclick = function (){set_active_report_complete_status(true)};
+
+    }
+
+    alert_unsaved_changes(true);
 
 }
+
+function compile_all_reports() {
+
+    // Iterate through all reports in the active report set
+    for (const report of active_report_set.reports){
+        report.compiled_comment = report.raw_comment;
+        // Replace all instances of comment bank labels with comment text
+        for (const comment of active_report_set.comment_bank){
+            report.compiled_comment = report.compiled_comment.replaceAll(`[${comment.label}]`, comment.text);
+        }
+
+        // Update data value entries
+        for (const dvl of Object.keys(report.data_values)){
+            report.compiled_comment = report.compiled_comment.replaceAll(`[${dvl}]`, report.data_values[dvl]);
+        }
+
+        // Update student name
+        report.compiled_comment = report.compiled_comment.replaceAll("[name]", report.student.firstname);
+    }
+    update_local_storage();
+    alert_unsaved_changes(true);
+
+}
+
+

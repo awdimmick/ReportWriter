@@ -45,5 +45,6 @@ def clear_temp_folder():
     shutil.rmtree('uploads')
     os.makedirs('uploads')
 
+
 if __name__=="__main__":
     clear_temp_folder()

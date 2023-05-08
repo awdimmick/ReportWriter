@@ -29,29 +29,42 @@
         template which you can re-upload in future to carry on where you left off.</p>
     <h2>Let's get started!</h2>
     <p>Choose an option to get started with ReportWriter</p>
-    <form method="post" action="/upload_report_set" enctype="multipart/form-data">
-        <div class="w3-row w3-center">
-            <div class="w3-cell w3-half w3-section">
-                <button class="w3-button w3-green w3-section" onclick="window.location.href='/get_template';">Download a blank
-                    template
-                </button>
-            </div>
 
-            <div class="w3-cell w3-half w3-cell-middle">
-                <p>Upload a started report set (.xlsx)</p>
-
-                <input type="file" id="report_set_file" name="report_set_file" class=""
-                       accept="application/vnd.ms-excel,.xlsx">
-                <input type="submit" class="w3-button w3-blue" value="Upload">
-            </div>
-
+    <div class="w3-row w3-center">
+        <div class="w3-cell w3-half w3-section">
+            <button class="w3-button w3-green w3-section" onclick="window.location.href='/get_template';">Download a
+                blank
+                template
+            </button>
         </div>
 
-    </form>
+        <div class="w3-cell w3-half w3-cell-middle">
+            <p>Upload a started report set (.xlsx)</p>
+            <form method="post" action="/upload_report_set" enctype="multipart/form-data">
+                <input type="file" id="report_set_file" name="report_set_file" class=""
+                       accept="application/vnd.ms-excel,.xlsx">
+
+                <input type="submit" class="w3-button w3-blue" value="Upload">
+            </form>
+        </div>
+
+    </div>
 
     {% for message in get_flashed_messages() %}
         <p class="error_message">{{ message }}</p>
     {% endfor %}
+
+    <!--
+    <div>
+        <h4>Using the AEAS?</h4>
+        <p>If you have an AEAS spreadsheet that you'd like to use as the basis of your reports you can upload and convert it to a ReportWriter template here.</p>
+        <form action="/upload_aeas" method="post" enctype="multipart/form-data">
+            <input type="file" id="aeas_file" name="aeas_file" class=""
+                       accept="application/vnd.ms-excel,.xlsm">
+                <input type="submit" class="w3-button w3-blue" value="Upload AEAS">
+        </form>
+    </div>
+    -->
 
 </div>
 </body>
