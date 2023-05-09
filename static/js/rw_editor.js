@@ -139,11 +139,11 @@ function load_reports_from_server() {
             active_report_set = JSON.parse(xhr.responseText);
             // In case any reports comments are null, replace with empty strings
 
-            for (const report of active_report_set.reports){
-                if (report.raw_comment == null){
+            for (const report of active_report_set.reports) {
+                if (report.raw_comment == null) {
                     report.raw_comment = "";
                 }
-                if (report.compiled_comment == null){
+                if (report.compiled_comment == null) {
                     report.compiled_comment = "";
                 }
             }
@@ -206,11 +206,10 @@ function save_excel() {
 
 }
 
-function new_report_set(){
-    if (!unsaved_changes){
+function new_report_set() {
+    if (!unsaved_changes) {
         window.location.href = '/';
-    }
-    else if (window.confirm("Are you sure you wish to start a new report set? You will lose any unsaved changes to your current reports.")){
+    } else if (window.confirm("Are you sure you wish to start a new report set? You will lose any unsaved changes to your current reports.")) {
         window.location.href = '/';
     }
 }
@@ -303,7 +302,7 @@ function load_editor_page() {
     }
 }
 
-function continue_loading_editor_page(){
+function continue_loading_editor_page() {
     load_comment_bank();
     refresh_comment_bank();
     populate_student_sidebar();
@@ -365,7 +364,7 @@ function render_comment_bank_comment(label, text, id, category) {
 
     comment.appendChild(comment_action_buttons);
     comment_parent.appendChild(comment);
-    showHideCommentBankButtons(id,true);
+    showHideCommentBankButtons(id, true);
 
 }
 
@@ -694,14 +693,16 @@ function load_active_report_data_values() {
         // Add data value pairs
         for (let dvl of dv_labels) {
             row = document.createElement("tr");
-            row.onclick = function (){add_data_label_to_report(`${dvl}`)};
+            row.onclick = function () {
+                add_data_label_to_report(`${dvl}`)
+            };
             row.innerHTML = `<td>${dvl}</td><td>${active_report.data_values[dvl]}</td>`;
             dv_table.appendChild(row);
         }
     }
 }
 
-function add_data_label_to_report(label){
+function add_data_label_to_report(label) {
 
     const raw_report = document.getElementById("raw_report_text");
 
@@ -726,27 +727,30 @@ function update_active_report() {
 
 }
 
-function set_active_report_complete_status(complete){
+function set_active_report_complete_status(complete) {
     let active_report = active_report_set.reports[active_report_id - 1];
     let mark_complete_btn = document.getElementById("report_editor_complete_button");
     active_report.complete = complete;
 
-    if (complete){
+    if (complete) {
         // Update "Mark as complete button"
         mark_complete_btn.innerText = "Mark as incomplete";
         mark_complete_btn.className = mark_complete_btn.className.replace(" w3-white", " w3-green");
         mark_complete_btn.className = mark_complete_btn.className.replace(" w3-hover-green", " w3-hover-gray");
         // Change button behaviour
-        mark_complete_btn.onclick = function (){set_active_report_complete_status(false)};
+        mark_complete_btn.onclick = function () {
+            set_active_report_complete_status(false)
+        };
         // Update sidebar appearance for active report
         set_student_sidebar_status("complete", active_report_id);
-    }
-    else {
+    } else {
         set_student_sidebar_status("draft", active_report_id);
         mark_complete_btn.innerText = "Mark as complete";
         mark_complete_btn.className = mark_complete_btn.className.replace(" w3-green", " w3-white");
         mark_complete_btn.className = mark_complete_btn.className.replace(" w3-hover-gray", " w3-hover-green");
-        mark_complete_btn.onclick = function (){set_active_report_complete_status(true)};
+        mark_complete_btn.onclick = function () {
+            set_active_report_complete_status(true)
+        };
 
     }
 
@@ -757,15 +761,15 @@ function set_active_report_complete_status(complete){
 function compile_all_reports() {
 
     // Iterate through all reports in the active report set
-    for (const report of active_report_set.reports){
+    for (const report of active_report_set.reports) {
         report.compiled_comment = report.raw_comment;
         // Replace all instances of comment bank labels with comment text
-        for (const comment of active_report_set.comment_bank){
+        for (const comment of active_report_set.comment_bank) {
             report.compiled_comment = report.compiled_comment.replaceAll(`[${comment.label}]`, comment.text);
         }
 
         // Update data value entries
-        for (const dvl of Object.keys(report.data_values)){
+        for (const dvl of Object.keys(report.data_values)) {
             report.compiled_comment = report.compiled_comment.replaceAll(`[${dvl}]`, report.data_values[dvl]);
         }
 
@@ -777,4 +781,14 @@ function compile_all_reports() {
 
 }
 
+/** Home page function **/
+function upload_report_set() {
+
+    const frm = document.getElementById("upload_report_set_form");
+    const btn = document.getElementById("upload_report_set_button");
+    btn.setAttribute('disabled', true);
+    btn.value = 'Processing...';
+    frm.submit();
+
+}
 

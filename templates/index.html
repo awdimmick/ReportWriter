@@ -40,12 +40,13 @@
 
         <div class="w3-cell w3-half w3-cell-middle">
             <p>Upload a started report set (.xlsx)</p>
-            <form method="post" action="/upload_report_set" enctype="multipart/form-data">
+            <form id="upload_report_set_form" method="post" action="/upload_report_set" enctype="multipart/form-data">
                 <input type="file" id="report_set_file" name="report_set_file" class=""
                        accept="application/vnd.ms-excel,.xlsx">
 
-                <input type="submit" class="w3-button w3-blue" value="Upload">
+                <input id="upload_report_set_button" type="button" class="w3-button w3-blue" value="Upload" onclick="upload_report_set()">
             </form>
+
         </div>
 
     </div>
