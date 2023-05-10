@@ -792,3 +792,66 @@ function upload_report_set() {
 
 }
 
+function aeas_upload_status(status) {
+
+    const indicator = document.getElementById("aeas_upload_status");
+    const frm = document.getElementById("aeas_upload_form");
+    if (status === "uploading") {
+        frm.className += " w3-hide";
+        indicator.className = indicator.className.replaceAll("w3-hide", "");
+    } else {
+        indicator.className += " w3-hide";
+        frm.className = indicator.className.replaceAll("w3-hide", "");
+
+    }
+}
+
+function aeas_upload_handler() {
+
+    const XHR = new XMLHttpRequest();
+    const aeas_form = document.getElementById("aeas_upload_form");
+    const modal_content = document.getElementById("aeas_modal_content");
+    const processing_indicator = document.getElementById("aeas_processing_indicator");
+
+    // Bind the FormData object and the form element
+    const FD = new FormData(aeas_form);
+
+    XHR.onloadstart = () => {
+
+        modal_content.className += " w3-hide";
+        processing_indicator.className = modal_content.className.replaceAll(" w3-hide", "");
+
+    };
+
+    // Define what happens on successful data submission
+    XHR.addEventListener("load", (event) => {
+        if (XHR.status === 200) {
+        }
+        // alert(XHR.responseText);
+        show_hide_aeas_modal("hide");
+        modal_content.className = modal_content.className.replaceAll(" w3-hide", "");
+        processing_indicator.className += " w3-hide";
+        window.location.href = XHR.responseText;
+    });
+
+    // Define what happens in case of error
+    XHR.addEventListener("error", (event) => {
+        alert('Oops! Something went wrong.');
+        show_hide_aeas_modal("hide");
+        modal_content.className = modal_content.className.replaceAll(" w3-hide", "");
+        processing_indicator.className += " w3-hide";
+    });
+
+    // Set up our request
+    XHR.open("POST", "/upload_aeas");
+
+    // The data sent is what the user provided in the form
+    XHR.send(FD);
+
+
+}
+
+function show_hide_aeas_modal(status) {
+    const modal = document.getElementById("aeas_modal");
+    modal.style.display = status === "show" ? 'block' : 'none';
+}

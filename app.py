@@ -11,7 +11,7 @@ from utils import allowed_file, generate_secret_key, generate_random_filename, c
 
 utils.clear_temp_folder()
 app = Flask(__name__)
-app.config['SECRET_KEY'] = generate_secret_key()
+app.config['SECRET_KEY'] = 'SAMEFORALL' #generate_secret_key()
 
 @app.route('/')
 def index():
@@ -134,8 +134,9 @@ def upload_aeas():
             rs = model.AEASReportSetConverter.getReportSetFromAEAS(aeas_path)
 
             rs_filepath = rs.save_to_excel_template()
-            #return "/download/" + rs_filepath
-            return redirect('/download/' + rs_filepath)
+            return f"/download/{rs_filepath}"
+            #return redirect('/download/' + rs_filepath)
+
 
         except model.AEASReportSetConverter.LoadAEASError as e:
             flash(str(e))
