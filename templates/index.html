@@ -11,28 +11,56 @@
     <link href="/static/style/rw.css" rel="stylesheet">
 </head>
 
-<body onload="clear_local_storage()">
+<body>
 <div class="w3-container">
     <div class="w3-panel w3-green"><h1>ReportWriter</h1>
-        <p>Where copy-and-paste meets data-driven, targeted student reporting</p></div>
+        <p>Data-driven, targeted student reporting made easy</p></div>
 
     <strong>Welcome to ReportWriter!</strong>
     <p>To keep things simple and secure, ReportWriter doesn't save any of your or your students' data, so there are no
         accounts or logins required.</p>
-    <p>Instead, to get started simply download the Excel template, add your students' data, save and then uplaod your
+    <p>Instead, to get started simply download the Excel template, add your students' data, save and then upload your
         saved
         template. Your reports will then open in the ReportWriter editor, where you can setup your comment bank and
         write
         your reports!</p>
-    <p>When you are finished writing your reports, simply press 'Save reports' to download an updated version of the
-        Excel
-        template which you can re-upload in future to carry on where you left off.</p>
+    <p>When you are finished writing your reports, simply choose 'Save report set' from the 'Menu' drop-down to
+        download an updated version of the Excel template which you can re-upload in future to carry on where you left
+        off.</p>
     <hr>
     <h2>Let's get started!</h2>
-    <p>Choose an option to get started with ReportWriter</p>
 
-    <div class="w3-row w3-center">
+
+    <div class="w3-row-padding">
+        <table class="w3-center w3-margin-bottom" style="width: 100%">
+            <tr style="vertical-align:top">
+                <td class="w3-half">
+                    <h3>Step 1</h3>
+                    <p>Download a blank template</p>
+                    <button class="w3-button w3-green" onclick="window.location.href='/get_template';">
+                        Download template
+                    </button>
+                </td>
+                <td class="w3-half">
+                    <h3>Step 2</h3>
+                    <p>Upload a report set (Excel .xlsx format)</p>
+                    <form id="upload_report_set_form" method="post" ><!--action="/upload_report_set" enctype="multipart/form-data"> -->
+
+
+                        <input type="file" id="report_set_file" name="report_set_file"
+                               accept="application/vnd.ms-excel,.xlsx">
+
+                        <input type="button" id="upload_report_set_button" class="w3-button w3-blue" value="Upload"
+                               onclick="upload_report_set()">
+                    </form>
+                </td>
+            </tr>
+
+        </table>
+
+        <!--
         <div class="w3-cell w3-half w3-section">
+            <h3>Step 1</h3>
             <button class="w3-button w3-green w3-section" onclick="window.location.href='/get_template';">Download a
                 blank
                 template
@@ -40,20 +68,22 @@
         </div>
 
         <div class="w3-cell w3-half w3-cell-middle">
+            <h3>Step 2</h3>
             <p>Upload a started report set (.xlsx)</p>
             <form id="upload_report_set_form" method="post" action="/upload_report_set" enctype="multipart/form-data">
                 <input type="file" id="report_set_file" name="report_set_file" class=""
                        accept="application/vnd.ms-excel,.xlsx">
 
-                <input id="upload_report_set_button" type="submit" class="w3-button w3-blue" value="Upload">
+                <input type="button" id="upload_report_set_button"  class="w3-button w3-blue" value="Upload" onclick="upload_report_set()">
             </form>
 
         </div>
+        -->
 
     </div>
 
     {% for message in get_flashed_messages() %}
-        <p class="error_message">{{ message }}</p>
+        <p class="w3-container w3-pale-red w3-leftbar w3-border-red w3-padding">{{ message }}</p>
     {% endfor %}
 
     <hr>
@@ -65,15 +95,15 @@
 
     </div>
 
-    <!-- Add comment modal -->
+    <!-- AEAS modal -->
     <div id="aeas_modal" class="w3-modal">
         <div class="w3-modal-content w3-padding">
             <div class="w3-container">
                 <span onclick="show_hide_aeas_modal('hide')" class="w3-button w3-display-topright">&times;</span>
                 <h3 id="aeas_modal_title">AEAS converter</h3>
                 <div id="aeas_processing_indicator" class="w3-center w3-margin-top w3-hide">
-                    <p>Processing (this might take a few seconds)...</p><br>
-                    <img src="/static/assets/loading_pulse.gif">
+                    <p>Processing (this might take quite a few seconds)...</p><br>
+                    <img src="/static/assets/loading.gif" class="w3-margin-bottom">
                 </div>
                 <div id="aeas_modal_content">
                     <div class="w3-cell-row w3-margin-bottom">
@@ -97,6 +127,18 @@
             </div>
         </div>
     </div>
+
+    <!-- Upload progress modal -->
+    <div id="upload_progress_modal" class="w3-modal">
+        <div class="w3-modal-content w3-padding">
+            <div class="w3-container w3-center">
+                <p>Uploading and building your report set</p><br>
+                <img src="/static/assets/loading.gif" class="w3-margin-bottom">
+            </div>
+
+        </div>
+    </div>
+
 
 </div>
 </body>

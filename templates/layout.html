@@ -13,8 +13,9 @@
 <body class="w3-light-grey" onload="load_editor_page()">
 
 <div class="w3-container" style="padding:0px;">
-    <!--<h1>Report Writer</h1>-->
+
     <div class="w3-row">
+
         <div class="w3-bar w3-border w3-blue-gray">
             <span class="w3-bar-item"><b>ReportWriter</b> Editor</span>
             <div class="w3-dropdown-hover">
@@ -45,8 +46,8 @@
                 <div class="w3-threequarter w3-padding"><strong id="report_editor_student_name" style="font-size: large">Student name</strong> (<span id="report_editor_student_group">Group</span>)
                 </div>
                 <div class="w3-bar w3-quarter">
-                    <button class="w3-button w3-border w3-round" onclick="load_active_report('previous')">&lt; Previous</button>
-                    <button class="w3-button w3-border w3-round" onclick="load_active_report('next')">Next &gt;</button>
+                    <button class="w3-button w3-border w3-round w3-right w3-margin-right" onclick="load_active_report('next')">&gt;</button>
+                    <button class="w3-button w3-border w3-round w3-right w3-margin-right" onclick="load_active_report('previous')">&lt;</button>
                 </div>
             </div>
 
@@ -57,7 +58,7 @@
             <div class="w3-cell-row">
                 <div class="w3-container w3-cell" style="width: 30%">
 
-                    <table id="report_editor_data_values_table" class="w3-table">
+                    <table id="report_editor_data_values_table" class="w3-table w3-small" >
                         <tr>
                             <th>Label</th>
                             <th>Value</th>
@@ -160,6 +161,20 @@
             </div>
         </div>
     </div>
+
+    <!-- Building ReportSet download modal -->
+        <!-- Upload progress modal -->
+    <div id="download_progress_modal" class="w3-modal">
+        <div class="w3-modal-content w3-padding">
+            <div class="w3-container w3-center">
+                <p>Compiling your report set (this could take a while it if is a large set) ...</p><br>
+                <img src="/static/assets/loading.gif" class="w3-margin-bottom">
+            </div>
+
+        </div>
+    </div>
+
+
 </div>
 </body>
 </html>

@@ -139,8 +139,8 @@ def upload_aeas():
 
 
         except model.AEASReportSetConverter.LoadAEASError as e:
-            flash(str(e))
-            return redirect(url_for('index'))
+            return "Could not validate AEAS document", 415
+
 
         except Exception as e:
             flash(str(e))
@@ -182,10 +182,13 @@ def upload_report_set():
                 return redirect(url_for('editor'))
 
             except model.LoadExcelTemplateException as e:
-                flash("Error uploading Excel report set: " + str(e))
+                # flash("Error uploading Excel report set: " + str(e))
                 return redirect(url_for('index'))
+        else:
 
-    flash("Invalid template file! Please download a fresh template and try again.")
+            # flash("Invalid template file! Please download a fresh template and try again.")
+            return "Invalid ReportWriter template file uploaded", 415
+
     return redirect(url_for('index'))
 
 
@@ -204,7 +207,7 @@ def get_report_set_json_from_session():
     # if 'active_report_set_json' in session:
     #    return session['active_report_set_json']
     else:
-        return abort(404)
+        return "Uploaded file did not contain any reports, or was not a valid ReportWriter template.", 404
 
 
 @app.after_request

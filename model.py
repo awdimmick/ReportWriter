@@ -440,7 +440,8 @@ class AEASReportSetConverter:
             raise AEASReportSetConverter.LoadAEASError(str(e))
 
         except Exception as e:
-            raise e
+            raise AEASReportSetConverter.LoadAEASError(str(e))
+
 
 
 if __name__ == '__main__':

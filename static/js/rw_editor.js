@@ -151,7 +151,8 @@ function load_reports_from_server() {
             update_local_storage();
             continue_loading_editor_page();
         } else if (xhr.status == 404) {
-            console.log("No active report set found.");
+            alert("No reports could be found in the uploaded document");
+
             window.location.href = "/";
         }
     };
@@ -190,6 +191,9 @@ function save_excel() {
         // let save_button = document.getElementById("btn_download_xlsx");
         // save_button.setAttribute("disabled", "true");
         // save_button.innerText = "Saving...";
+
+        show_hide_download_progress_modal("show");
+
     }
 
     xhr.onload = (event) => {
@@ -197,6 +201,7 @@ function save_excel() {
             // let save_button = document.getElementById("btn_download_xlsx");
             // save_button.removeAttribute("disabled");
             // save_button.innerText = "Save reports";
+            show_hide_download_progress_modal("hide");
             alert_unsaved_changes(false);
             let download_url = xhr.responseText;
             window.location.href = download_url;
@@ -353,7 +358,7 @@ function render_comment_bank_comment(label, text, id, category) {
     // Create div element to contain the comment action buttons
     const comment_action_buttons = document.createElement("div");
     comment_action_buttons.id = "cb_comment_" + id + "_buttons";
-    comment_action_buttons.className = "w3-center w3-hide";
+    comment_action_buttons.className = "w3-center w3-margin-bottom w3-hide";
     comment_action_buttons.innerHTML = `<div class="w3-bar">
                                 <button class="w3-small w3-button w3-white w3-border w3-round w3-hover-green" onclick="use_comment_in_report(${id})">Use
                                 </button>&nbsp;
@@ -784,11 +789,50 @@ function compile_all_reports() {
 /** Home page function **/
 function upload_report_set() {
 
+    const xhr = new XMLHttpRequest();
     const frm = document.getElementById("upload_report_set_form");
     const btn = document.getElementById("upload_report_set_button");
-    btn.setAttribute('disabled', true);
-    btn.value = 'Processing...';
-    frm.submit();
+    const fd = new FormData(frm);
+
+    xhr.onloadstart = ()=>{
+        btn.setAttribute('disabled', true);
+        btn.value = 'Processing...';
+        show_hide_upload_progress_modal("show");
+    };
+
+    xhr.onload = ev => {
+        if (xhr.status === 200){
+
+            // Restore upload button
+            btn.removeAttribute('disabled');
+            btn.value = 'Upload';
+
+            // Clear existing local storage
+            clear_local_storage();
+
+            // Redirect to editor page
+            window.location.href = '/editor';
+
+        }
+
+        if (xhr.status === 415){
+            // Restore upload button
+            show_hide_upload_progress_modal("hide");
+            btn.removeAttribute('disabled');
+            btn.value = 'Upload';
+            document.getElementById("report_set_file").value="";
+            alert(xhr.responseText);
+
+        }
+    };
+
+    xhr.onerror = ev => {
+        alert("There was a problem when uploading the report set: " + xhr.responseText);
+    };
+
+    xhr.open("POST", "/upload_report_set");
+
+    xhr.send(fd)
 
 }
 
@@ -819,19 +863,27 @@ function aeas_upload_handler() {
     XHR.onloadstart = () => {
 
         modal_content.className += " w3-hide";
-        processing_indicator.className = modal_content.className.replaceAll(" w3-hide", "");
+        processing_indicator.className = processing_indicator.className.replaceAll(" w3-hide", "");
 
     };
 
     // Define what happens on successful data submission
     XHR.addEventListener("load", (event) => {
         if (XHR.status === 200) {
+            show_hide_aeas_modal("hide");
+            modal_content.className = modal_content.className.replaceAll(" w3-hide", "");
+            processing_indicator.className += " w3-hide";
+            window.location.href = XHR.responseText;
+        }
+        else if (XHR.status === 415){
+            alert(XHR.responseText);
+            show_hide_aeas_modal("hide");
+            modal_content.className = modal_content.className.replaceAll(" w3-hide", "");
+            processing_indicator.className += " w3-hide";
+            window.location.href = '/';
+
         }
         // alert(XHR.responseText);
-        show_hide_aeas_modal("hide");
-        modal_content.className = modal_content.className.replaceAll(" w3-hide", "");
-        processing_indicator.className += " w3-hide";
-        window.location.href = XHR.responseText;
     });
 
     // Define what happens in case of error
@@ -853,5 +905,15 @@ function aeas_upload_handler() {
 
 function show_hide_aeas_modal(status) {
     const modal = document.getElementById("aeas_modal");
+    modal.style.display = status === "show" ? 'block' : 'none';
+}
+
+function show_hide_upload_progress_modal(status) {
+    const modal = document.getElementById("upload_progress_modal");
+    modal.style.display = status === "show" ? 'block' : 'none';
+}
+
+function show_hide_download_progress_modal(status) {
+    const modal = document.getElementById("download_progress_modal");
     modal.style.display = status === "show" ? 'block' : 'none';
 }
