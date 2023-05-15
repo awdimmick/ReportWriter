@@ -9,6 +9,13 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="/static/style/rw.css" rel="stylesheet">
+
+    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/assets/favicon-16x16.png">
+    <link rel="manifest" href="/static/assets/site.webmanifest">
+
 </head>
 
 <body>
@@ -44,7 +51,8 @@
                 <td class="w3-half">
                     <h3>Step 2</h3>
                     <p>Upload a report set (Excel .xlsx format)</p>
-                    <form id="upload_report_set_form" method="post" ><!--action="/upload_report_set" enctype="multipart/form-data"> -->
+                    <form id="upload_report_set_form" method="post">
+                        <!--action="/upload_report_set" enctype="multipart/form-data"> -->
 
 
                         <input type="file" id="report_set_file" name="report_set_file"

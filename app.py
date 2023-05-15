@@ -209,6 +209,9 @@ def get_report_set_json_from_session():
     else:
         return "Uploaded file did not contain any reports, or was not a valid ReportWriter template.", 404
 
+@app.route('/favicon.ico')
+def serve_favicon():
+    return send_from_directory('static/assets', 'favicon.ico')
 
 @app.after_request
 def flush_temp_files(request):
