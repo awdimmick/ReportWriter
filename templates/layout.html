@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script src="/static/js/rw_editor.js" type="application/javascript"></script>
+
+    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/assets/favicon-16x16.png">
+    <link rel="manifest" href="/static/assets/site.webmanifest">
+
 </head>
 
 <body class="w3-light-grey" onload="load_editor_page()">
@@ -43,22 +50,29 @@
 
             <!-- Report navigation -->
             <div class="w3-row w3-margin-top">
-                <div class="w3-threequarter w3-padding"><strong id="report_editor_student_name" style="font-size: large">Student name</strong> (<span id="report_editor_student_group">Group</span>)
+                <div class="w3-threequarter w3-padding"><strong id="report_editor_student_name"
+                                                                style="font-size: large">Student name</strong> (<span
+                        id="report_editor_student_group">Group</span>)
                 </div>
                 <div class="w3-bar w3-quarter">
-                    <button class="w3-button w3-border w3-round w3-right w3-margin-right" onclick="load_active_report('next')">&gt;</button>
-                    <button class="w3-button w3-border w3-round w3-right w3-margin-right" onclick="load_active_report('previous')">&lt;</button>
+                    <button class="w3-button w3-border w3-round w3-right w3-margin-right"
+                            onclick="load_active_report('next')">&gt;
+                    </button>
+                    <button class="w3-button w3-border w3-round w3-right w3-margin-right"
+                            onclick="load_active_report('previous')">&lt;
+                    </button>
                 </div>
             </div>
 
-            <div id="report_editor_student_notes_container" class="w3-panel w3-margin w3-padding w3-border w3-light-grey w3-round-large">
+            <div id="report_editor_student_notes_container"
+                 class="w3-panel w3-margin w3-padding w3-border w3-light-grey w3-round-large">
                 <span id="report_editor_student_notes_text">Student notes</span>
             </div>
 
             <div class="w3-cell-row">
                 <div class="w3-container w3-cell" style="width: 30%">
 
-                    <table id="report_editor_data_values_table" class="w3-table w3-small" >
+                    <table id="report_editor_data_values_table" class="w3-table w3-small">
                         <tr>
                             <th>Label</th>
                             <th>Value</th>
@@ -83,14 +97,18 @@
                     <p>
                         <label for="raw_report_text">Report text</label>
                         <textarea id="raw_report_text" class="w3-input w3-border w3-round" rows="6"
-                                  placeholder="Enter report comment" onkeyup="compile_report_preview()" onfocusout="update_active_report()"></textarea>
+                                  placeholder="Enter report comment" onkeyup="compile_report_preview()"
+                                  onfocusout="update_active_report()"></textarea>
                     </p>
 
                     <label>Compiled report</label>
-                    <p id="report_editor_compiled_report" class="w3-white w3-padding-small w3-border-round" style="min-height: 6em;">[Report text will appear here]</p>
+                    <p id="report_editor_compiled_report" class="w3-white w3-padding-small w3-border-round"
+                       style="min-height: 6em;">[Report text will appear here]</p>
                     <small id="report_editor_character_count">XX characters</small>
                     <div class="w3-row w3-margin-bottom">
-                        <button id="report_editor_complete_button" class="w3-button w3-white w3-border w3-round w3-hover-green w3-right" onclick="set_active_report_complete_status(true)">Mark as complete
+                        <button id="report_editor_complete_button"
+                                class="w3-button w3-white w3-border w3-round w3-hover-green w3-right"
+                                onclick="set_active_report_complete_status(true)">Mark as complete
                         </button>
                     </div>
 
@@ -121,11 +139,13 @@
                 <div class="w3-cell-row w3-margin-bottom">
                     <div class="w3-cell w3-twothird" style="padding-right: 10px">
                         <label>Comment label</label>&nbsp;
-                        <input id="add_comment_modal_label" type="text" class="w3-input w3-border w3-round" placeholder="Enter comment label">
+                        <input id="add_comment_modal_label" type="text" class="w3-input w3-border w3-round"
+                               placeholder="Enter comment label">
                     </div>
                     <div class="w3-cell w3-third">
                         <label>Category</label>
-                        <input type="text" id="add_comment_modal_category" list="add_comment_modal_categories" class="w3-input w3-border w3-round"
+                        <input type="text" id="add_comment_modal_category" list="add_comment_modal_categories"
+                               class="w3-input w3-border w3-round"
                                placeholder="Select category">
                         <datalist id="add_comment_modal_categories">
 
@@ -156,14 +176,16 @@
                     </div>
                 </div>
                 <div class="w3-row w3-margin-bottom">
-                    <button id="add_comment_modal_add_button" class="w3-button w3-green w3-right w3-round" onclick="add_comment_to_comment_bank()">Add to comment bank</button>
+                    <button id="add_comment_modal_add_button" class="w3-button w3-green w3-right w3-round"
+                            onclick="add_comment_to_comment_bank()">Add to comment bank
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Building ReportSet download modal -->
-        <!-- Upload progress modal -->
+    <!-- Upload progress modal -->
     <div id="download_progress_modal" class="w3-modal">
         <div class="w3-modal-content w3-padding">
             <div class="w3-container w3-center">
