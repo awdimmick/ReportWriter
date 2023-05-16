@@ -14,13 +14,14 @@ v0_1_template_constants = {
 
     'STUDENT_LASTNAME_COL': 1,
     'STUDENT_FIRSTNAME_COL': 2,
-    'STUDENT_GROUP_COL': 3,
-    'STUDENT_NOTES_COL': 4,
+    'STUDENT_GENDER': 3,
+    'STUDENT_GROUP_COL': 4,
+    'STUDENT_NOTES_COL': 5,
 
-    'RAW_COMMENT_COL': 5,
-    'COMPILED_COMMENT_COL': 6,
+    'RAW_COMMENT_COL': 6,
+    'COMPILED_COMMENT_COL': 7,
 
-    'DATA_VALUES_START_COL': 7,
+    'DATA_VALUES_START_COL': 8,
     'DATA_VALUES_LABELS_ROW': 3
     
 }
@@ -30,6 +31,7 @@ v0_1_template_constants = {
 class Student:
     firstname: str
     lastname: str
+    gender: str
     group: str
     notes: str
 
@@ -55,11 +57,14 @@ class Comment:
 class LoadExcelTemplateException(Exception):
     pass
 
+
 class SaveExcelTemplateException(Exception):
     pass
 
+
 class ExportReportSetException(Exception):
     pass
+
 
 class ReportSet:
 
@@ -108,13 +113,13 @@ class ReportSet:
         for i, report in enumerate(self.reports):
             row = template_constants['REPORT_DATA_HEADER_ROWS'] + 1 + i
             metadata_row = template_constants['REPORT_METADATA_HEADER_ROWS'] + 1 + i
-            report_data.cell(row, 1).value = report.student.lastname
-            report_data.cell(row, 2).value = report.student.firstname
-            report_data.cell(row, 3).value = report.student.group
-            report_data.cell(row, 4).value = report.student.notes
-            report_data.cell(row, 5).value = report.raw_comment
-            report_data.cell(row, 6).value = report.compiled_comment
-            #report_data.cell(row, 7).value = report.compiled_comment
+            report_data.cell(row, template_constants['STUDENT_LASTNAME_COL']).value = report.student.lastname
+            report_data.cell(row, template_constants['STUDENT_FIRSTNAME_COL']).value = report.student.firstname
+            report_data.cell(row, template_constants['STUDENT_GENDER']).value = report.student.gender
+            report_data.cell(row, template_constants['STUDENT_GROUP_COL']).value = report.student.group
+            report_data.cell(row, template_constants['STUDENT_NOTES_COL']).value = report.student.notes
+            report_data.cell(row, template_constants['RAW_COMMENT_COL']).value = report.raw_comment
+            report_data.cell(row, template_constants['COMPILED_COMMENT_COL']).value = report.compiled_comment
 
             # Add data values data
             for j, label in enumerate(report.data_values.keys()):
@@ -213,6 +218,7 @@ class ReportSet:
                    Student(
                        r['student']['firstname'],
                        r['student']['lastname'],
+                       r['student']['gender'],
                        r['student']['group'],
                        r['student']['notes']
                    ),
@@ -303,6 +309,7 @@ class ReportSet:
                         student=Student(
                             firstname=report_data.cell(row, template_constants['STUDENT_FIRSTNAME_COL']).value,
                             lastname=report_data.cell(row, template_constants['STUDENT_LASTNAME_COL']).value,
+                            gender=report_data.cell(row, template_constants['STUDENT_GENDER']).value.upper() if report_data.cell(row, template_constants['STUDENT_GENDER']).value is not None else "",
                             group=report_data.cell(row, template_constants['STUDENT_GROUP_COL']).value,
                             notes=report_data.cell(row, template_constants['STUDENT_NOTES_COL']).value
                         ),
@@ -425,7 +432,7 @@ class AEASReportSetConverter:
                     except ZeroDivisionError:
                         dvs[key] = 0
 
-                report = Report(i + 1, "", "", Student(fn, ln, group, notes), False, dvs)
+                report = Report(i + 1, "", "", Student(fn, ln, "", group, notes), False, dvs)
 
                 rs.reports.append(report)
 

@@ -476,7 +476,15 @@ function showHideAddCommentModal(show, comment_id) {
     // Add report set's data labels as buttons
     const data_value_labels = Object.keys(active_report_set.reports[0].data_values);
     const btns = document.getElementById("add_comment_modal_data_value_buttons");
-    btns.innerHTML = "";
+    btns.innerHTML = `<button class="w3-button w3-border w3-padding-small" onclick="addDataLabelToComment('name')">
+                            name
+                        </button>&nbsp;
+                        <button class="w3-button w3-border w3-padding-small" onclick="addDataLabelToComment('hht')">
+                            his/her/their
+                        </button>&nbsp;
+                        <button class="w3-button w3-border w3-padding-small" onclick="addDataLabelToComment('hst')">
+                            he/she/they
+                        </button>&nbsp;`;
     for (let l of data_value_labels) {
         let btn = document.createElement('button');
         btn.className = "w3-button w3-border w3-padding-small w3-margin-right";
@@ -528,8 +536,6 @@ function add_comment_to_comment_bank(edit_id) {
 
     // Reload comment bank, including categories
     load_comment_bank();
-
-    refresh_comment_bank();
 
     // Redraw comment bank sidebar
     refresh_comment_bank();
@@ -668,6 +674,18 @@ function compile_report_preview() {
         compiled = compiled.replaceAll(`[${dvl}]`, active_report.data_values[dvl]);
     }
 
+    // Update gender-specific pronouns
+    if (active_report.student.gender.toUpperCase()[0] === "M") {
+        compiled = compiled.replaceAll("[hht]", "his");
+        compiled = compiled.replaceAll("[hst]", "he");
+    } else if (active_report.student.gender.toUpperCase()[0] === "F") {
+        compiled = compiled.replaceAll("[hht]", "her");
+        compiled = compiled.replaceAll("[hst]", "she");
+    } else {
+        compiled = compiled.replaceAll("[hht]", "their");
+        compiled = compiled.replaceAll("[hst]", "they");
+    }
+
     // Replace name
     compiled = compiled.replaceAll("[name]", active_report.student.firstname);
 
@@ -778,6 +796,18 @@ function compile_all_reports() {
             report.compiled_comment = report.compiled_comment.replaceAll(`[${dvl}]`, report.data_values[dvl]);
         }
 
+        // Update gender-specific pronouns
+        if (report.student.gender.toUpperCase()[0] === "M") {
+            report.compiled_comment = report.compiled_comment.replaceAll("[hht]", "his");
+            report.compiled_comment = report.compiled_comment.replaceAll("[hst]", "he");
+        } else if (report.student.gender.toUpperCase()[0] === "F") {
+            report.compiled_comment = report.compiled_comment.replaceAll("[hht]", "her");
+            report.compiled_comment = report.compiled_comment.replaceAll("[hst]", "she");
+        } else {
+            report.compiled_comment = report.compiled_comment.replaceAll("[hht]", "their");
+            report.compiled_comment = report.compiled_comment.replaceAll("[hst]", "they");
+        }
+
         // Update student name
         report.compiled_comment = report.compiled_comment.replaceAll("[name]", report.student.firstname);
     }
@@ -794,14 +824,14 @@ function upload_report_set() {
     const btn = document.getElementById("upload_report_set_button");
     const fd = new FormData(frm);
 
-    xhr.onloadstart = ()=>{
+    xhr.onloadstart = () => {
         btn.setAttribute('disabled', true);
         btn.value = 'Processing...';
         show_hide_upload_progress_modal("show");
     };
 
     xhr.onload = ev => {
-        if (xhr.status === 200){
+        if (xhr.status === 200) {
 
             // Restore upload button
             btn.removeAttribute('disabled');
@@ -815,12 +845,12 @@ function upload_report_set() {
 
         }
 
-        if (xhr.status === 415){
+        if (xhr.status === 415) {
             // Restore upload button
             show_hide_upload_progress_modal("hide");
             btn.removeAttribute('disabled');
             btn.value = 'Upload';
-            document.getElementById("report_set_file").value="";
+            document.getElementById("report_set_file").value = "";
             alert(xhr.responseText);
 
         }
@@ -874,8 +904,7 @@ function aeas_upload_handler() {
             modal_content.className = modal_content.className.replaceAll(" w3-hide", "");
             processing_indicator.className += " w3-hide";
             window.location.href = XHR.responseText;
-        }
-        else if (XHR.status === 415){
+        } else if (XHR.status === 415) {
             alert(XHR.responseText);
             show_hide_aeas_modal("hide");
             modal_content.className = modal_content.className.replaceAll(" w3-hide", "");

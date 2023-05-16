@@ -223,6 +223,8 @@ def flush_temp_files(request):
                 print("Deleted file: " + str(fp))
             except FileNotFoundError as e:
                 print("ERROR: Could not find " + str(fp))
+            except PermissionError as e:
+                print(f"WARNING: Permission not given to delete {fp}. Check it has been removed in future call.")
     return request
 
 

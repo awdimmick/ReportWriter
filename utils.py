@@ -40,9 +40,12 @@ def generate_random_filename(folder, extension=""):
     return random_filename
 
 def clear_temp_folder():
-    shutil.rmtree('temp')
+    try:
+        shutil.rmtree('temp')
+        shutil.rmtree('uploads')
+    except:
+        pass
     os.makedirs('temp')
-    shutil.rmtree('uploads')
     os.makedirs('uploads')
 
 
