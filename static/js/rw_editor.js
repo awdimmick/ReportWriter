@@ -476,18 +476,18 @@ function showHideAddCommentModal(show, comment_id) {
     // Add report set's data labels as buttons
     const data_value_labels = Object.keys(active_report_set.reports[0].data_values);
     const btns = document.getElementById("add_comment_modal_data_value_buttons");
-    btns.innerHTML = `<button class="w3-button w3-border w3-padding-small" onclick="addDataLabelToComment('name')">
+    btns.innerHTML = `<button class="w3-button w3-border w3-padding-small w3-margin-bottom" onclick="addDataLabelToComment('name')">
                             name
                         </button>&nbsp;
-                        <button class="w3-button w3-border w3-padding-small" onclick="addDataLabelToComment('hht')">
+                        <button class="w3-button w3-border w3-padding-small w3-margin-bottom" onclick="addDataLabelToComment('hht')">
                             his/her/their
                         </button>&nbsp;
-                        <button class="w3-button w3-border w3-padding-small" onclick="addDataLabelToComment('hst')">
+                        <button class="w3-button w3-border w3-padding-small w3-margin-bottom" onclick="addDataLabelToComment('hst')">
                             he/she/they
                         </button>&nbsp;`;
     for (let l of data_value_labels) {
         let btn = document.createElement('button');
-        btn.className = "w3-button w3-border w3-padding-small w3-margin-right";
+        btn.className = "w3-button w3-border w3-padding-small w3-margin-right w3-margin-bottom";
         btn.onclick = function () {
             addDataLabelToComment(`${l}`)
         };
@@ -710,7 +710,7 @@ function load_active_report_data_values() {
 
         // Add header
         let row = document.createElement("tr");
-        row.innerHTML = "<th>Label</th><th>Value</th>";
+        row.innerHTML = "<th>Perspective</th><th>Value</th>";
         dv_table.appendChild(row);
 
         // Add data value pairs
