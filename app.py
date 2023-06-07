@@ -213,6 +213,10 @@ def get_report_set_json_from_session():
 def serve_favicon():
     return send_from_directory('static/assets', 'favicon.ico')
 
+@app.route('/userguide')
+def serve_userguide():
+    return send_from_directory('static/assets', 'Report Writer User Guide.pdf')
+
 @app.after_request
 def flush_temp_files(request):
     if 'temp_files_queue' in session:
