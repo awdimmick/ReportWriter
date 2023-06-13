@@ -446,17 +446,22 @@ function showHideAddCommentModal(show, comment_id) {
     const label = document.getElementById("add_comment_modal_label");
     const text = document.getElementById("add_comment_modal_text");
     const category = document.getElementById("add_comment_modal_category");
+    const save_btn = document.getElementById("add_comment_modal_add_button");
+    let id = comment_id;
 
     if (comment_id == null) {
         label.value = "";
         text.value = "";
         category.value = "";
+        save_btn.onclick = function () {
+            add_comment_to_comment_bank()
+        };
+        save_btn.innerText = "Add to comment bank";
+
     } else {
-        let id = comment_id;
         label.value = active_report_set.comment_bank[id - 1].label;
         text.value = active_report_set.comment_bank[id - 1].text;
         category.value = active_report_set.comment_bank[id - 1].category;
-        const save_btn = document.getElementById("add_comment_modal_add_button");
         save_btn.onclick = function () {
             add_comment_to_comment_bank(id)
         };
@@ -496,13 +501,11 @@ function showHideAddCommentModal(show, comment_id) {
     }
 
     if (comment_id != null) {
-        // TODO: Add code for pre-populating comment and change title of modal to "Edit"
         document.getElementById("add_comment_modal_title").innerText = "Edit comment";
     } else {
         document.getElementById("add_comment_modal_title").innerText = "Add comment";
     }
     document.getElementById('add_comment_modal').style.display = show === "show" ? 'block' : 'none';
-
 }
 
 function addDataLabelToComment(label) {

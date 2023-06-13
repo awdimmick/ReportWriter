@@ -408,8 +408,9 @@ class AEASReportSetConverter:
                 row = AEASReportSetConverter.STUDENT_DATA_FIRST_ROW + i
                 name = DES.cell(row, AEASReportSetConverter.STUDENT_NAME_COL).value
 
-                fn = name.split(" ")[0]
-                ln = ''.join(name.split(" ")[1:])
+                # AEAS uses Lastname, Firstnames format
+                ln = name.split(" ")[0]
+                fn = ''.join(name.split(" ")[1:])
                 group = DES.cell(row, AEASReportSetConverter.STUDENT_GROUP_COL).value
                 notes = DES.cell(row, AEASReportSetConverter.STUDENT_NOTES_COL).value
                 # group = DES.cell(row, AEASReportSetConverter.STUDENT_GROUP_COL).value if DES.cell(row, AEASReportSetConverter.STUDENT_GROUP_COL).value is not None else ''
