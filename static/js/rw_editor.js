@@ -713,7 +713,7 @@ function load_active_report_data_values() {
 
         // Add header
         let row = document.createElement("tr");
-        row.innerHTML = "<th>Perspective</th><th>Value</th>";
+        row.innerHTML = "<th>Student data</th><th>Value</th>";
         dv_table.appendChild(row);
 
         // Add data value pairs
