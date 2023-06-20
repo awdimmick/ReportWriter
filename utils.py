@@ -1,3 +1,5 @@
+import datetime
+
 import openpyxl, string, secrets, random, os, shutil
 
 def allowed_file(filename):
@@ -50,6 +52,12 @@ def clear_temp_folder():
         os.makedirs('uploads')
     except:
         pass
+
+
+def log(message, ip=""):
+    with open("log.csv","a") as logfile:
+            logfile.write(f"{datetime.datetime.isoformat(datetime.datetime.now())},{message}, {ip}\n")
+
 
 
 if __name__=="__main__":

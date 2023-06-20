@@ -15,15 +15,18 @@ app.config['SECRET_KEY'] = 'SAMEFORALL' #generate_secret_key()
 
 @app.route('/')
 def index():
+    utils.log(f"Homepage visited", request.remote_addr)
     return render_template("index.html")
 
 @app.route('/get_template')
 def send_template():
+    utils.log(f"New template downloaded", request.remote_addr)
     return send_from_directory('resources','template.xlsx', download_name='ReportWriterTemplate.xlsx', as_attachment=True)
 
 
 @app.route('/download/xlsx', methods=["POST"])
 def download_xlsx():
+    utils.log(f"ReportSet saved", request.remote_addr)
     try:
         data = request.data
         rs_data = data.decode('utf-8')
@@ -113,6 +116,7 @@ def upload_comment_bank():
 
 @app.route('/upload_aeas', methods=['POST'])
 def upload_aeas():
+    utils.log(f"AEAS upload attempted", request.remote_addr)
     if 'aeas_file' not in request.files:
         flash('No AEAS document uploaded!')
         return redirect(url_for('index'))
@@ -149,6 +153,7 @@ def upload_aeas():
 
 @app.route('/upload_report_set', methods=["POST"])
 def upload_report_set():
+    utils.log(f"ReportSet uploaded", request.remote_addr)
     if 'report_set_file' not in request.files:
         flash('No file uploaded!')
         return redirect(url_for('index'))
@@ -194,6 +199,7 @@ def upload_report_set():
 
 @app.route('/editor')
 def editor():
+    utils.log(f"RW Editor loaded", request.remote_addr)
     return render_template('layout.html')
 
 
@@ -215,6 +221,7 @@ def serve_favicon():
 
 @app.route('/userguide')
 def serve_userguide():
+    utils.log(f"Userguide downloaded", request.remote_addr)
     return send_from_directory('static/assets', 'Report Writer User Guide.pdf')
 
 @app.after_request
