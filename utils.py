@@ -56,7 +56,7 @@ def clear_temp_folder():
 
 def log(message, ip=""):
     with open("log.csv","a") as logfile:
-            logfile.write(f"{datetime.datetime.isoformat(datetime.datetime.now())},{message}, {ip}\n")
+            logfile.write(f"{datetime.datetime.isoformat(datetime.datetime.now())},{message},{ip}\n")
 
 
 
