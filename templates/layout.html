@@ -6,6 +6,7 @@
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/style/rw.css">
 
     <script src="/static/js/rw_editor.js" type="application/javascript"></script>
 
@@ -42,7 +43,8 @@
     <div class="w3-row">
 
         <!-- Student selection sidebar -->
-        <div id="student_sidebar" class="w3-sidebar m2 w3-bar-block w3-light-grey w3-card" style="width:15%;">
+        <div id="student_sidebar" class="w3-sidebar m2 w3-bar-block w3-light-grey w3-card"
+             style="width:15%; padding-bottom: 60px;">
         </div>
 
         <!-- Report editing area -->
@@ -124,6 +126,10 @@
             <button class="w3-button w3-round w3-block w3-border w3-white w3-margin-bottom"
                     onclick="showHideAddCommentModal('show')">Add comment
             </button>
+
+            <p><input id="comment_bank_compact_view_checkbox" type="checkbox" class="" onclick="toggleCompactCommentView(this.checked)">&nbsp;<label
+                    for="comment_bank_compact_view_checkbox" class="">Compact view</label>
+            </p>
             <div id="comment_bank_comments" style="padding-bottom: 100px;">
 
             </div>
@@ -161,13 +167,16 @@
                 <div class="w3-row w3-margin-bottom">
                     <span>Add report data</span>
                     <div id="add_comment_modal_data_value_buttons" class="w3-bar">
-                        <button class="w3-button w3-border w3-padding-small w3-margin-bottom" onclick="addDataLabelToComment('name')">
+                        <button class="w3-button w3-border w3-padding-small w3-margin-bottom"
+                                onclick="addDataLabelToComment('name')">
                             name
                         </button>&nbsp;
-                        <button class="w3-button w3-border w3-padding-small w3-margin-bottom" onclick="addDataLabelToComment('hht')">
+                        <button class="w3-button w3-border w3-padding-small w3-margin-bottom"
+                                onclick="addDataLabelToComment('hht')">
                             his/her/their
                         </button>&nbsp;
-                        <button class="w3-button w3-border w3-padding-small w3-margin-bottom" onclick="addDataLabelToComment('hst')">
+                        <button class="w3-button w3-border w3-padding-small w3-margin-bottom"
+                                onclick="addDataLabelToComment('hst')">
                             he/she/they
                         </button>&nbsp;
                     </div>

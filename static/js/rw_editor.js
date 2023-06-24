@@ -342,10 +342,10 @@ function render_comment_bank_comment(label, text, id, category) {
         comment_parent = document.getElementById(`cb_${category}_comments`);
     }
 
-    // Create div element to contain the commment
+    // Create div element to contain the comment
     const comment = document.createElement("div");
     comment.id = "cb_comment_" + id;
-    comment.className = "w3-panel w3-border w3-white";
+    comment.className = "rw-commentbank-comment w3-panel w3-border w3-white";
     // comment.onmouseenter = function () {
     //     showHideCommentBankButtons(id, true)
     // };
@@ -371,6 +371,18 @@ function render_comment_bank_comment(label, text, id, category) {
     comment_parent.appendChild(comment);
     showHideCommentBankButtons(id, true);
 
+    // Compact comment
+    const compact_comment = document.createElement("div");
+    compact_comment.id = "cb_compact_comment_" + id;
+    compact_comment.className = "w3-panel w3-border rw-compact-commentbank-comment w3-hide";
+    compact_comment.innerHTML = `<p><strong>${label}</strong></p>`;
+    compact_comment.innerHTML += `<p>${text.slice(0, 40)}...</p>`;
+    compact_comment.onclick = () => {
+        use_comment_in_report(id)
+    };
+    compact_comment.style.cursor = "pointer";
+    comment_parent.appendChild(compact_comment)
+
 }
 
 function add_comment_category_to_comment_bank(label) {
@@ -394,6 +406,23 @@ function add_comment_category_to_comment_bank(label) {
 }
 
 /** Comment bank interaction **/
+
+function toggleCompactCommentView(compact) {
+    const compact_comments = document.getElementsByClassName("rw-compact-commentbank-comment");
+    const normal_comments = document.getElementsByClassName("rw-commentbank-comment");
+    console.log(compact);
+    if (compact === true) {
+        for (let i = 0; i < compact_comments.length; i++) {
+            compact_comments[i].className = compact_comments[i].className.replaceAll(" w3-hide", "");
+            normal_comments[i].className += " w3-hide";
+        }
+    } else {
+        for (let i = 0; i < compact_comments.length; i++) {
+            normal_comments[i].className = normal_comments[i].className.replaceAll(" w3-hide", "");
+            compact_comments[i].className += " w3-hide";
+        }
+    }
+}
 
 function showCommentBankCategory(categoryLabel) {
 

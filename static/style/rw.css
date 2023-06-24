@@ -8,3 +8,14 @@
     border-left-color: lightgreen;
     border-left-width: 5px;
 }
+
+.rw-compact-commentbank-comment{
+    background-color: white;
+    color:black;
+    /*font-size:small;*/
+
+}
+
+.rw-compact-commentbank-comment:hover{
+    background-color: whitesmoke;
+}
