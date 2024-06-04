@@ -6,6 +6,7 @@ import os
 import datetime
 
 import model
+import ai
 import utils
 from utils import allowed_file, generate_secret_key, generate_random_filename, clear_temp_folder
 
